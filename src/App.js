@@ -4,6 +4,7 @@ import { useState } from 'react';
 import data from './data.js';
 import {ProductList,DetailPage,Header} from './pages/productList';
 import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
+import axios from 'axios';
 
 function App() {
 
@@ -53,7 +54,17 @@ function App() {
               }          
             </div>
           </div>
+          <button onClick={() => {
+            axios.get('https://codingapple1.github.io/shop/data2.json').then((result)=> {
+              console.log(result.data)
+              let copyData = [...shoes];
+              setShoes(copyData.concat(result.data));              
+            }).catch(()=>{
+              console.log('실패')
+            })
+          }}>더보기</button>
         </div>
+        
         } />
         
         <Route path="/detail/:id" element={<div><DetailPage shoes={shoes} /></div>} />
