@@ -25,10 +25,17 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
-      
+
       {/* <Link to="/">홈</Link>
       <Link to="/detail">상세페이지</Link> */}
 
+      <button onClick={() => {
+        let copyshoes = [...shoes];
+        copyshoes.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1);
+        setShoes(copyshoes);
+        console.log(shoes);
+
+      }}>상품정렬</button>
       <Routes>
         <Route path="/" element={
         <div>
@@ -39,9 +46,9 @@ function App() {
               {
                 shoes.map(function(a,i){
                   return(
-                    
+                    <Nav.Link href={"/detail/" + shoes[i].id}>
                     <ProductList shoes={shoes} i={i}/>
-                    
+                    </Nav.Link>
                   )
                 })
               }          
@@ -50,7 +57,7 @@ function App() {
         </div>
         } />
         
-        <Route path="/detail" element={<div><DetailPage /></div>} />
+        <Route path="/detail/:id" element={<div><DetailPage shoes={shoes} /></div>} />
         
         <Route path="/about" element={<div>about페이지 <Outlet></Outlet></div>}>
           <Route path="member" element={<div>member페이지</div>} />
