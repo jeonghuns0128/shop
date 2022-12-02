@@ -29,18 +29,17 @@ function App() {
       {/* <Link to="/">홈</Link>
       <Link to="/detail">상세페이지</Link> */}
 
-      <button onClick={() => {
-        let copyshoes = [...shoes];
-        copyshoes.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1);
-        setShoes(copyshoes);
-        console.log(shoes);
-
-      }}>상품정렬</button>
       <Routes>
         <Route path="/" element={
         <div>
           <div className="main-bg"></div>
+          <button onClick={() => {
+            let copyshoes = [...shoes];
+            copyshoes.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1);
+            setShoes(copyshoes);
+            console.log(shoes);
 
+          }}>상품정렬</button>
           <div className="container">
             <div className="row">
               {

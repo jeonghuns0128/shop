@@ -27,16 +27,21 @@ function DivPage(){
 
 function DetailPage(props){
 
+    let [inputData, setInputData] = useState('');
+
     useEffect(() => {
         let timer = setTimeout(() => {
            setIsColsed(false);
            //console.log('2초 후 : ' + isColesd);
            }, 2000);
-           console.log('2');
+           //console.log('2');
 
-        
+           if(inputData != '' && isNaN(inputData)){
+            alert('숫자만 입력하세요!');
+           }
+
         return () => {
-            console.log('1');
+            //console.log('1');
             clearTimeout(timer);
         }   
 
@@ -44,7 +49,7 @@ function DetailPage(props){
         //    return () => {
         //     코드실행~~ (타이머 실행 시 기존 타이머 제거)
         //    }
-    })
+    }, [inputData])
     
 
     let [isColesd, setIsColsed] = useState(true);
@@ -53,6 +58,8 @@ function DetailPage(props){
     //console.log("id : " + id);
     //console.log("props : " + props.shoes[id]);
     
+    
+
     if (typeof props.shoes[id] != 'undefined'){
         if (id == props.shoes[id].id){
             return (
@@ -68,7 +75,10 @@ function DetailPage(props){
                             <h4 className="pt-5">{props.shoes[id].title}</h4>
                             <p>{props.shoes[id].content}</p>
                             <p>{props.shoes[id].price}원</p>
-                            <button className="btn btn-danger">주문하기</button> 
+                            <input onChange={(e) => {
+                                setInputData(e.target.value);
+                            }} /> <button className="btn btn-danger">주문하기</button> 
+                            <div>{inputData}</div>
                         </div>
                     </div>
                     
