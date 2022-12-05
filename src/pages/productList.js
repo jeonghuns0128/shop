@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DropdownButton, Dropdown } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Nav } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
@@ -82,6 +82,22 @@ function DetailPage(props){
                         </div>
                     </div>
                     
+                    <Nav justify variant="tabs" defaultActiveKey="/home">
+                        <Nav.Item>
+                            <Nav.Link href="/home">상세정보</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="link-1">리뷰</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="link-2">Q&A</Nav.Link>
+                        </Nav.Item>
+                        <Nav.Item>
+                            <Nav.Link eventKey="disabled" disabled>
+                            반품/교환정보
+                            </Nav.Link>
+                        </Nav.Item>
+                    </Nav>
                 </div> 
             )
         } else {
