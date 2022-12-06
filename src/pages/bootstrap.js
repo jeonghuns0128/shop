@@ -14,17 +14,18 @@ import {
 import { CiTextAlignJustify } from 'react-icons/ci'
 import { GiAmpleDress } from 'react-icons/gi'
 import { FaDog } from 'react-icons/fa'
-import { GiClothes } from 'react-icons/gi'
+import { GiClothes, GiConverseShoe } from 'react-icons/gi'
 import { BsGithub } from 'react-icons/bs'
 import { ImSearch } from 'react-icons/im'
 import styled from 'styled-components'
+import { useNavigate } from 'react-router-dom'
 
 function Header() {
   return (
     <>
       <Navbar key={false} bg="light" expand={false} className="mb-3">
         <Container fluid>
-          <Navbar.Brand href="/">도그박</Navbar.Brand>
+          <Navbar.Brand>도그박</Navbar.Brand>
           <ImSearch size="30" />
           <Navbar.Toggle aria-controls={`offcanvasNavbar-expand-${false}`} />
           <Navbar.Offcanvas
@@ -130,23 +131,24 @@ function IndividualIntervals() {
   )
 }
 
-function Horizontal() {
+function HorizontalCategory() {
+  const navigate = useNavigate()
   return (
     <ListGroup horizontal>
       <ListGroup.Item>
-        <CiTextAlignJustify size="40" />
+        <CiTextAlignJustify size="40" /> 전체
       </ListGroup.Item>
       <ListGroup.Item>
-        <FaDog size="40" />
+        <FaDog size="40" /> 애견
       </ListGroup.Item>
       <ListGroup.Item>
-        <GiClothes size="40" />
+        <GiClothes size="40" onClick={() => {navigate('/clothes/top')}} /> 상의
       </ListGroup.Item>
       <ListGroup.Item>
-        <GiAmpleDress size="40" />
+        <GiAmpleDress onClick={() => {navigate('/clothes/bottom')}} size="40" /> 하의
       </ListGroup.Item>
       <ListGroup.Item>
-        <BsGithub size="40" />
+        <GiConverseShoe onClick={() => {navigate('/clothes/shoes')}} size="40"/>신발
       </ListGroup.Item>
     </ListGroup>
   )
@@ -155,10 +157,6 @@ function Horizontal() {
 function CardList() {
   return (
     <>
-      <div>
-        상품리스트
-        <button>더보기</button>
-      </div>
       <Card style={{ width: '10' }}>
         <Card.Img variant="top" src="./shoes1.jpg" />
       </Card>
@@ -166,4 +164,4 @@ function CardList() {
   )
 }
 
-export { Header, TopMenu, IndividualIntervals, Horizontal, CardList }
+export { Header, TopMenu, IndividualIntervals, HorizontalCategory, CardList }
