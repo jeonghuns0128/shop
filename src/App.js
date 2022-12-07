@@ -1,92 +1,97 @@
-import './App.css';
-import { Button, Navbar, Container, Nav } from 'react-bootstrap';
-import { useState } from 'react';
-import data from './data.js';
-import {ProductList,DetailPage,Header} from './pages/productList';
-import {Routes, Route, Link, useNavigate, Outlet} from 'react-router-dom'
-import axios from 'axios';
+import './App.css'
+import { Button, Navbar, Container, Nav } from 'react-bootstrap'
+import { useState } from 'react'
+import data from './data.js'
+import { ProductList, DetailPage } from './pages/productList'
+import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
+import axios from 'axios'
+import {
+  Header,
+  TopMenu,
+  IndividualIntervals,
+  HorizontalCategory,
+  CardList,
+} from './pages/bootstrap.js'
+import { HistoryBack } from './function/function'
 
 function App() {
-
-
-  let [shoes, setShoes] = useState(data);
-  let navigate = useNavigate();
+  let [shoes, setShoes] = useState(data)
+  let navigate = useNavigate()
 
   return (
     <div className="App">
-
-      <Navbar bg="dark" variant="dark">
-        <Container>
-          <Navbar.Brand href="#home">도그박</Navbar.Brand>
-          <Nav className="me-auto">
-            <Nav.Link href="/">투데이</Nav.Link>
-            <Nav.Link href="/detail">브랜드</Nav.Link>
-            <Nav.Link href="#pricing">베스트</Nav.Link>
-            <Header />
-          </Nav>
-        </Container>
-      </Navbar>
-
-      {/* <Link to="/">홈</Link>
-      <Link to="/detail">상세페이지</Link> */}
-
+      
       <Routes>
         <Route path="/" element={
-        <div>
-          <div className="main-bg"></div>
-          <button onClick={() => {
-            let copyshoes = [...shoes];
-            copyshoes.sort((a, b) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1);
-            setShoes(copyshoes);
-            console.log(shoes);
-
-          }}>상품정렬</button>
-          <div className="container">
-            <div className="row">
-              {
-                shoes.map(function(a,i){
-                  return(
-                    <Nav.Link href={"/detail/" + shoes[i].id}>
-                    <ProductList shoes={shoes} i={i}/>
-                    </Nav.Link>
-                  )
-                })
-              }          
-            </div>
+          <>
+            <Header />
+            <TopMenu />
+            <IndividualIntervals />
+            <HorizontalCategory />
+           </>
+        }
+        />
+        
+        <Route path="/clothes" element={<div><div> <HistoryBack /> 의류 페이지</div><Outlet></Outlet></div>}>
+          <Route path="top" element={<div>상의 페이지</div>}>
+          </Route>
+          <Route path="bottom" element={<div>하의 페이지</div>}>
+          </Route>
+          <Route path="shoes" element={<div><div>신발 페이지</div>
+            <ProductList />
+          {/* <Outlet></Outlet> */}
           </div>
-          <button onClick={() => {
-            axios.get('https://codingapple1.github.io/shop/data2.json').then((result)=> {
-              console.log(result.data)
-              let copyData = [...shoes];
-              setShoes(copyData.concat(result.data));              
-            }).catch(()=>{
-              console.log('실패')
-            })
-          }}>더보기</button>
-        </div>
-        
-        } />
-        
-        <Route path="/detail/:id" element={<div><DetailPage shoes={shoes} /></div>} />
-        
-        <Route path="/about" element={<div>about페이지 <Outlet></Outlet></div>}>
-          <Route path="member" element={<div>member페이지</div>} />
-          <Route path="location" element={<div>location페이지</div>} />  
+        }>
+            {/* <Route path=":id" element={<DetailPage shoes={shoes} />} /> */}
+          </Route>
+
+
+          {/* <Route path="/detail" element={
+              <div>
+                <div>
+                  <h3>상품 상세페이지</h3>
+                </div>
+                <Outlet></Outlet>
+              </div>
+            }
+          >
+            <Route path="shoes/:id" element={<DetailPage shoes={shoes} />} />
+            <Route path="top" element={<p>상의\</p>} />
+            <Route path="bottom" element={<p>하의\</p>} />
+          </Route> */}
         </Route>
 
-        <Route path="/event" element={<div><h3>오늘의 이벤트 </h3><Outlet></Outlet></div>}>
+        <Route path="/clothes/shoes/:id" element={
+          <>
+            <HistoryBack />
+            <DetailPage/>
+          </>}></Route>
+
+        <Route path="/about" element={
+            <div>
+              about페이지 <Outlet></Outlet>
+            </div>
+          }
+        >
+          <Route path="member" element={<div>member페이지</div>} />
+          <Route path="location" element={<div>location페이지</div>} />
+        </Route>
+
+        <Route path="/event" element={
+            <div>
+              <h3>오늘의 이벤트 </h3>
+              <Outlet></Outlet>
+            </div>
+          }
+        >
           <Route path="one" element={<p>첫 주문시 양배추즙 서비스\</p>} />
           <Route path="two" element={<p>생일기념 쿠폰 받기\</p>} />
         </Route>
 
         <Route path="*" element={<div>없는 페이지 입니다.</div>} />
-        
       </Routes>
-
-
-      
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
