@@ -2,18 +2,21 @@ import { Navbar,  Container, Offcanvas, Nav, NavDropdown, Form, Button, Carousel
 
 import { CiTextAlignJustify } from 'react-icons/ci'
 import { GiAmpleDress } from 'react-icons/gi'
-import { FaDog } from 'react-icons/fa'
+import { FaDog, FaStore, FaCompass, FaHeart, FaUserCircle } from 'react-icons/fa'
 import { GiClothes, GiConverseShoe } from 'react-icons/gi'
 import { BsCart4 } from 'react-icons/bs'
+import { AiTwotoneHome } from 'react-icons/ai'
+
 import { ImSearch } from 'react-icons/im'
 import styled from 'styled-components'
 import { useNavigate } from 'react-router-dom'
 import { HistoryBack } from '../function/function'
+import '../css/bootstrap.css'
 
 function Header() {
   return (
     <>
-      <Navbar key={false} bg="light" expand={false} className="mb-3">
+      <Navbar key={false} bg="light" expand={false} className="mb-3" style={{position: 'fixed', top: '0', left: '0', right: '0'}}>
         <Container fluid>
           <Navbar.Brand>도그박</Navbar.Brand>
           <div>
@@ -68,7 +71,7 @@ function Header() {
 
 function TopMenu() {
   return (
-    <Nav>
+    <Nav style={{paddingTop : '75px'}}>
       <Nav.Item>
         <Nav.Link style={{color : 'black'}} eventKey="1" href="/">
           투데이
@@ -234,6 +237,17 @@ function RecommendArea(){
   )
 }
 
+function BottomMenu(){
+  return (
+    <nav className="wrapper">
+      <div><AiTwotoneHome size='30px' /></div>
+      <div><FaStore size='30px'/></div>
+      <div><FaCompass size='30px' /></div>
+      <div><FaHeart size='30px'/></div>
+      <div><FaUserCircle size='30px'/></div>
+    </nav>
+  )
+}
 
-export { Header, TopMenu, IndividualIntervals, HorizontalCategory, CommonHeader, RecommendArea }
+export { Header, TopMenu, IndividualIntervals, HorizontalCategory, CommonHeader, RecommendArea, BottomMenu }
 

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { DropdownButton, Dropdown, Nav, Collapse } from 'react-bootstrap'
+import { DropdownButton, Dropdown, Nav, Card, Row, Col, CardGroup } from 'react-bootstrap'
 import { useParams } from 'react-router-dom'
 import styled from 'styled-components'
 import axios from 'axios'
@@ -24,18 +24,24 @@ function ProductList(props) {
 
     return (
         <div>
-            {product && product.map(product => {
-                return(<div><div onClick={() => {navigate('/clothes/shoes/' + product.id)
-                }}>
-                    {product.title}
-                </div>
-                {product.content}<br/>
-                {product.price}
-                {/* <Routes>
-                    <Route path="/:id" element={<DetailPage product={product} />}></Route>
-                </Routes> */}
-                </div>)
-            })}  
+            <CardGroup>
+                {product && product.map(product => {
+                    return(
+                    <Card onClick={() => {navigate('/clothes/shoes/' + product.id)}}>
+                        <Card.Img variant="top" style={{height : '200px'}} src={product.img_url} />
+                        <Card.Body>
+                        <Card.Title>{product.title}</Card.Title>
+                        <Card.Text>
+                            {product.content}
+                        </Card.Text>
+                        </Card.Body>
+                        <Card.Footer>
+                        <small className="text-muted">Last updated 3 mins ago</small>
+                        </Card.Footer>
+                    </Card>
+                    )
+                })}
+            </CardGroup>            
         </div>
     )
 }
@@ -93,45 +99,40 @@ function DetailPage(props) {
         <>
          {product && product.map(product => { 
             return(
-        <div className="container">
-            <div className="row">
-                {isColesd == true ? <DivPage /> : null}
-                <div className="col-md-6">
-                    <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%"/>
-                </div>
-                <div className="col-md-6">
-                    {/* {product && product.map(product => {  */}
-                        return(
-                        <>
+            <div className="container">
+                <div className="row">
+                    {isColesd == true ? <DivPage /> : null}
+                    <div className="col-md-6">
+                        <img src={product.img_url} width="100%"/>
+                    </div>
+                    <div className="col-md-6">
                         <h4 className="pt-5">{product.title}</h4>
                         <p>{product.content}</p>
                         <p>{product.price}원</p>
-                        </>)
-                    
-                
+                        
                         <input onChange={(e) => { setInputData(e.target.value) }}/>{' '}
                         <button className="btn btn-danger">주문하기</button>
                         <div>{inputData}</div>
+                    </div>
                 </div>
-            </div>
-        
-            <Nav justify variant="tabs" defaultActiveKey="/home">
-                <Nav.Item>
-                    <Nav.Link onClick={() => {setTapChange(0)}} eventKey="link-0">상세정보</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link onClick={() => {setTapChange(1)}} eventKey="link-1">리뷰</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link onClick={() => {setTapChange(2)}} eventKey="link-2">Q&A</Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                    <Nav.Link onClick={() => {setTapChange(3)}} eventKey="link-3">반품/교환정보</Nav.Link>
-                </Nav.Item>
-            </Nav>
             
-            {/* <TabComponent tabChange={tabChange} detailInfo={detailInfo} /> */}
-        </div> )
+                <Nav justify variant="tabs" defaultActiveKey="/home">
+                    <Nav.Item>
+                        <Nav.Link onClick={() => {setTapChange(0)}} eventKey="link-0">상세정보</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={() => {setTapChange(1)}} eventKey="link-1">리뷰</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={() => {setTapChange(2)}} eventKey="link-2">Q&A</Nav.Link>
+                    </Nav.Item>
+                    <Nav.Item>
+                        <Nav.Link onClick={() => {setTapChange(3)}} eventKey="link-3">반품/교환정보</Nav.Link>
+                    </Nav.Item>
+                </Nav>
+                
+                {/* <TabComponent tabChange={tabChange} detailInfo={detailInfo} /> */}
+            </div> )
         })}
     </>
     )

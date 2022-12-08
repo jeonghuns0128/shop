@@ -5,13 +5,7 @@ import data from './data.js'
 import { ProductList, DetailPage } from './pages/productList'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from 'axios'
-import {
-  Header,
-  TopMenu,
-  IndividualIntervals,
-  HorizontalCategory,
-  CardList,
-} from './pages/bootstrap.js'
+import { Header, TopMenu, IndividualIntervals, HorizontalCategory, CommonHeader, RecommendArea, BottomMenu } from './pages/bootstrap.js'
 import { HistoryBack } from './function/function'
 
 function App() {
@@ -28,11 +22,20 @@ function App() {
             <TopMenu />
             <IndividualIntervals />
             <HorizontalCategory />
+            <RecommendArea />
+            <BottomMenu />
+            <br/><br/><br/><br/><br/>
            </>
         }
         />
         
-        <Route path="/clothes" element={<div><div> <HistoryBack /> 의류 페이지</div><Outlet></Outlet></div>}>
+        <Route path="/clothes" element={
+          <div>
+            <div style={{textAlign : "left"}}>
+              <CommonHeader />              
+            </div><Outlet></Outlet>
+          </div>}>
+        
           <Route path="top" element={<div>상의 페이지</div>}>
           </Route>
           <Route path="bottom" element={<div>하의 페이지</div>}>
@@ -63,7 +66,7 @@ function App() {
 
         <Route path="/clothes/shoes/:id" element={
           <>
-            <HistoryBack />
+            <CommonHeader />
             <DetailPage/>
           </>}></Route>
 
