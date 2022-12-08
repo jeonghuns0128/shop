@@ -70,22 +70,22 @@ function TopMenu() {
   return (
     <Nav>
       <Nav.Item>
-        <Nav.Link eventKey="1" href="/">
+        <Nav.Link style={{color : 'black'}} eventKey="1" href="/">
           투데이
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="2" href="/brend">
+        <Nav.Link style={{color : 'black'}} eventKey="2" href="/brend">
           브랜드
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="3" href="/best">
+        <Nav.Link style={{color : 'black'}} eventKey="3" href="/best">
           베스트
         </Nav.Link>
       </Nav.Item>
       <Nav.Item>
-        <Nav.Link eventKey="4" href="/buety">
+        <Nav.Link style={{color : 'black'}} eventKey="4" href="/buety">
           뷰티
         </Nav.Link>
       </Nav.Item>
@@ -128,19 +128,19 @@ function HorizontalCategory() {
   const navigate = useNavigate()
   return (
     <ListGroup horizontal style={{paddingTop : '10px'}}>
-      <ListGroup.Item>
-        <CiTextAlignJustify size="40" /> 전체
+      <ListGroup.Item style={{backgroundColor : 'pink'}}>
+        <CiTextAlignJustify size="40"/> 전체
       </ListGroup.Item>
-      <ListGroup.Item>
+      <ListGroup.Item style={{backgroundColor : 'pink'}}>
         <FaDog size="40" /> 애견
       </ListGroup.Item>
-      <ListGroup.Item>
+      <ListGroup.Item style={{backgroundColor : 'pink'}}>
         <GiClothes size="40" onClick={() => {navigate('/clothes/top')}} /> 상의
       </ListGroup.Item>
-      <ListGroup.Item>
+      <ListGroup.Item style={{backgroundColor : 'pink'}}>
         <GiAmpleDress onClick={() => {navigate('/clothes/bottom')}} size="40" /> 하의
       </ListGroup.Item>
-      <ListGroup.Item>
+      <ListGroup.Item style={{backgroundColor : 'pink'}}>
         <GiConverseShoe onClick={() => {navigate('/clothes/shoes')}} size="40"/>신발
       </ListGroup.Item>
     </ListGroup>
@@ -234,4 +234,6 @@ function RecommendArea(){
   )
 }
 
+
 export { Header, TopMenu, IndividualIntervals, HorizontalCategory, CommonHeader, RecommendArea }
+
