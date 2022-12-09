@@ -238,13 +238,15 @@ function RecommendArea(){
 }
 
 function BottomMenu(){
+  const navigate = useNavigate()
+  
   return (
     <nav className="wrapper">
       <div><AiTwotoneHome size='30px' /></div>
       <div><FaStore size='30px'/></div>
       <div><FaCompass size='30px' /></div>
       <div><FaHeart size='30px'/></div>
-      <div><FaUserCircle size='30px'/></div>
+      <div><FaUserCircle size='30px' onClick={() => {navigate('/login')}}/></div>
     </nav>
   )
 }
