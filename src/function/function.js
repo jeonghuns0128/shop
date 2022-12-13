@@ -4,7 +4,8 @@ import { MdArrowBackIosNew } from 'react-icons/md'
 import { AiOutlineClose } from 'react-icons/ai'
 import { Button, Modal} from 'react-bootstrap';
 import { MdArrowForwardIos } from 'react-icons/md'
-import { MypageMiddleMenu } from '../pages/bootstrap'
+import { AiOutlineRight } from 'react-icons/ai'
+import { MypageMiddleMenu, IndividualIntervalsMyPage, FlushMyPage } from '../pages/bootstrap'
 
 
 function HistoryBack(){
@@ -23,6 +24,8 @@ function MyPage() {
     const [fullscreen, setFullscreen] = useState(true);
     const [show, setShow] = useState(false);
   
+    let sessionStorage = window.sessionStorage
+
     function handleShow(breakpoint) {
       setFullscreen(breakpoint);
       setShow(true);
@@ -30,13 +33,19 @@ function MyPage() {
 
     return (
         <>
-        <div onClick={() => {handleShow(true)}}>
-            <div style={{textAlign :'left'}}> 도그박 로그인 및 회원가입 </div>
-            <div style={{textAlign :'left', fontSize : '13px'}}> 3초면 돼요. 더 편리한 도그박을 경험하세요. </div>  
+        <div style={{height : '85.6%'}}>
+            <div style={{paddingTop : '60px'}} onClick={() => {handleShow(true)}}>
+                <div style={{width : '70%', height : '50px', float : 'left'}}>
+                    <div style={{textAlign :'left', paddingLeft : '10px'}}> 도그박 로그인 및 회원가입 </div>
+                    <div style={{textAlign :'left', fontSize : '13px', paddingLeft : '10px'}}> 3초면 돼요. 더 편리한 도그박을 경험하세요. </div>  
+                </div> 
+                <div style={{width : '30%', height : '50px', float : 'left', textAlign : 'center'}} ><AiOutlineRight size="30px" /></div>
+            </div>
+            {/* { loginMainModal == true ? <LoginMainModal SetLoginMainModal={SetLoginMainModal} /> : null} */}
+            <MypageMiddleMenu />
+            <IndividualIntervalsMyPage />
+            <FlushMyPage />
         </div>
-        {/* { loginMainModal == true ? <LoginMainModal SetLoginMainModal={SetLoginMainModal} /> : null} */}
-        <MypageMiddleMenu />
-
         <Modal show={show} fullscreen={fullscreen} onHide={() => setShow(false)}>
           <Modal.Header closeButton style={{border : 'none', marginRight : '330px'}}> 
           </Modal.Header>
