@@ -6,7 +6,7 @@ import { Button, Modal} from 'react-bootstrap';
 import { MdArrowForwardIos } from 'react-icons/md'
 import { AiOutlineRight } from 'react-icons/ai'
 import { MypageMiddleMenu, IndividualIntervalsMyPage, FlushMyPage } from '../pages/bootstrap'
-
+import { useParams } from 'react-router-dom'
 
 function HistoryBack(){
 
@@ -24,7 +24,9 @@ function MyPage() {
     const [fullscreen, setFullscreen] = useState(true);
     const [show, setShow] = useState(false);
   
-    let sessionStorage = window.sessionStorage
+    let { id } = useParams()
+    
+    console.log("name : " + id)
 
     function handleShow(breakpoint) {
       setFullscreen(breakpoint);
@@ -33,14 +35,18 @@ function MyPage() {
 
     return (
         <>
-        <div style={{height : '85.6%'}}>
-            <div style={{paddingTop : '60px'}} onClick={() => {handleShow(true)}}>
-                <div style={{width : '70%', height : '50px', float : 'left'}}>
-                    <div style={{textAlign :'left', paddingLeft : '10px'}}> 도그박 로그인 및 회원가입 </div>
-                    <div style={{textAlign :'left', fontSize : '13px', paddingLeft : '10px'}}> 3초면 돼요. 더 편리한 도그박을 경험하세요. </div>  
-                </div> 
-                <div style={{width : '30%', height : '50px', float : 'left', textAlign : 'center'}} ><AiOutlineRight size="30px" /></div>
-            </div>
+        <div>
+            {
+                id === undefined ? 
+                <div style={{marginTop : '60px'}} onClick={() => {handleShow(true)}}>
+                    <div style={{width : '70%', height : '50px', float : 'left'}}>
+                        <div style={{textAlign :'left', paddingLeft : '10px'}}> 도그박 로그인 및 회원가입 </div>
+                        <div style={{textAlign :'left', fontSize : '13px', paddingLeft : '10px'}}> 3초면 돼요. 더 편리한 도그박을 경험하세요. </div>  
+                    </div> 
+                    <div style={{width : '30%', height : '50px', float : 'left', textAlign : 'center'}} ><AiOutlineRight size="30px" /></div>
+                </div> : <div  style={{marginTop : '60px'}}>{id}님 환영합니다</div>  
+            }
+            
             {/* { loginMainModal == true ? <LoginMainModal SetLoginMainModal={SetLoginMainModal} /> : null} */}
             <MypageMiddleMenu />
             <IndividualIntervalsMyPage />
@@ -58,8 +64,8 @@ function MyPage() {
 
 function LoginMainModal(){
     
-    const CLIENT_ID = '58b5cdf9bd4f73d2bd0137e88df3ce48'
-    const REDIRECT_URI = 'http://localhost:3000/oauth/kakao'
+    const CLIENT_ID = process.env.REACT_APP_CLIENT_ID
+    const REDIRECT_URI = process.env.REACT_APP_REDIRECT_URL
     const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
     return (
@@ -71,6 +77,18 @@ function LoginMainModal(){
             <div style={{textAlign : 'center'}}>
                 <a href={KAKAO_AUTH_URL}>
                     <img src={process.env.PUBLIC_URL + './kakao_login_medium_wide.png'} />
+                </a>
+            </div>
+
+            <div style={{textAlign : 'center'}}>
+                <a href="http://localhost:3000/auth/kakao">
+                    카카오 로그인 TEST
+                </a>
+            </div>
+
+            <div style={{textAlign : 'center'}}>
+                <a href="http://localhost:3000/logout/kakao">
+                    카카오 로그아웃 TEST
                 </a>
             </div>
         </div>
