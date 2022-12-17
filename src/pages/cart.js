@@ -1,4 +1,4 @@
-import { BsCart4 } from 'react-icons/bs'
+import { BsCart4, BsCheckCircleFill } from 'react-icons/bs'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { HistoryBack } from '../function/function'
@@ -40,12 +40,12 @@ function CartHeader(){
 
     return(
       <div>
-        <div>전체선택 라인</div>
+        <div style={{textAlign : 'left'}}><BsCheckCircleFill style={{marginLeft : '10px'}} size="20px" />전체선택 라인 <button style={{marginLeft : '150px'}}>상품삭제</button></div>
         { 
         cartList.map((a,i)=>{
           return(
             <>
-              <div>상품리스트 : {cartList[i].title}</div>
+              <div style={{textAlign : 'left'}}><BsCheckCircleFill style={{marginLeft : '10px'}} size="20px" />상품리스트 : {cartList[i].title}</div>
               <div>결제금액 : {cartList[i].price} </div>
             </>
           )
