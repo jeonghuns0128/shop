@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react'
 import { BsCart4, BsCheckCircleFill } from 'react-icons/bs'
 import { FaRegCircle } from 'react-icons/fa'
-
+import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { HistoryBack } from '../function/function'
+import CloseButton from 'react-bootstrap/CloseButton';
 
 function CartHeader(){
     return(
       <>
-        <div style={{textAlign : 'left', height : '50px'}}>
-          <HistoryBack /> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;장바구니
+        <div className="wrapperTop" style={{textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden"}}>
+          <div style={{width : '20%', float : 'left', paddingTop : '5px'}}>
+            <HistoryBack />
+          </div>
+          <div style={{color : 'white', width : '60%', float : 'left', textAlign : 'center', paddingTop : '5px', fontSize : '20px'}}>장바구니</div>
         </div>
       </>
     )
@@ -43,6 +47,7 @@ function CartHeader(){
     let [isSelectTot, setIsSelectTot] = useState(true)
     let [isSelectOne, setIsSelectOne] = useState([])
     let [listCnt, setListCnt] = useState(cartList.length)
+    let [oneProductCnt, setOneProductCnt] = useState([1, 1])
 
     useEffect(() => {
       let copy = []
@@ -61,6 +66,11 @@ function CartHeader(){
         if(isSelectOne[i] === true){
           cnt = cnt +  1
         }
+        if(cartList.length === cnt){
+          setIsSelectTot(true)
+        } else{
+          setIsSelectTot(false)
+        }
       })
       console.log("cnt : " + cnt)
       setListCnt(cnt)
@@ -70,7 +80,23 @@ function CartHeader(){
       <div>
         <div style={{textAlign : 'left', width : '100%', height : '20px'}}>
           <div style={{width : '80%', float : 'left'}}>
-            {isSelectTot === true ? <BsCheckCircleFill style={{marginLeft : '10px', marginRight : '10px'}} size="20px" onClick={()=>{setIsSelectTot(false)}} /> : <FaRegCircle style={{marginLeft : '10px', marginRight : '10px'}} size="20px" onClick={()=>{setIsSelectTot(true)}}/>}
+            {isSelectTot === true ? <BsCheckCircleFill style={{marginLeft : '10px', marginRight : '10px'}} size="20px" onClick={()=>{
+              setIsSelectTot(false)
+              let copy = []
+              cartList.map((a,i)=>{
+                copy[i] = false
+                if(cartList.length === (i+1))
+                  setIsSelectOne(copy)
+              })
+              }} /> : <FaRegCircle style={{marginLeft : '10px', marginRight : '10px'}} size="20px" onClick={()=>{
+                setIsSelectTot(true)
+                let copy = []
+                cartList.map((a,i)=>{
+                  copy[i] = true
+                  if(cartList.length === (i+1))
+                    setIsSelectOne(copy)
+                })
+                }}/>}
             전체선택 ( {listCnt}/{cartList.length} )</div>
           <div style={{width : '20%', float : 'left'}}><a onClick={()=>{alert('상품을 삭제하시겠습니까?')}}>상품삭제</a></div>
         </div>
@@ -88,26 +114,70 @@ function CartHeader(){
               
               <hr style={{width : '100%', marginTop : '10px'}}/> 
 
-              <div style={{textAlign : 'left'}}>
-                {isSelectOne[i] === true ? <BsCheckCircleFill style={{marginLeft : '10px'}} size="20px" onClick={() => {
-                  let copy = [...isSelectOne]
-                  copy[i] = !isSelectOne[i]
-                  setIsSelectOne(copy)
-                }} /> : <FaRegCircle style={{marginLeft : '10px', marginRight : '10px'}} size="20px" onClick={()=>{
-                  let copy = [...isSelectOne]
-                  copy[i] = !isSelectOne[i]
-                  setIsSelectOne(copy)
-                }}/>}
-                 : {cartList[i].title}
+              <div style={{width : '100%'}}>
+                <div style={{textAlign : 'left', width : '10%', float : 'left'}}>
+                  {isSelectOne[i] === true ? <BsCheckCircleFill style={{marginLeft : '10px'}} size="20px" onClick={() => {
+                    let copy = [...isSelectOne]
+                    copy[i] = !isSelectOne[i]
+                    setIsSelectOne(copy)
+                  }} /> : <FaRegCircle style={{marginLeft : '10px', marginRight : '10px'}} size="20px" onClick={()=>{
+                    let copy = [...isSelectOne]
+                    copy[i] = !isSelectOne[i]
+                    setIsSelectOne(copy)
+                  }}/>}
+                </div>
+
+                <div style={{width : '90%', float : 'left'}}>
+                  <div style={{width : '100%'}}>
+                    <div style={{width : '20%', float : 'left'}}>사진</div>
+                    <div style={{width : '70%', float : 'left'}}>{cartList[i].title}</div>
+                    <div style={{width : '10%', float : 'left'}}><CloseButton /></div>
+                  </div>
+                  <div style={{textAlign : 'left'}}>배송비 무료 상품</div>
+                  <div>
+                    <div style={{textAlign : 'left', width :'80%', float : 'left'}}>
+                      <AiOutlineMinus  onClick={() => {
+                        let copy = [...oneProductCnt]
+                        if (copy[i] > 1){
+                          console.log('-')
+                          copy[i] = copy[i] - 1
+                          setOneProductCnt(copy)  
+                        }
+                      }} />
+                      <input style={{width : '35px'}} value = {oneProductCnt[i]}/>
+                      <AiOutlinePlus onClick={() => {
+                        let copy = [...oneProductCnt]
+                        copy[i] = copy[i] + 1
+                        setOneProductCnt(copy)
+                      }} />
+                    </div>
+                    <div style={{width : '20%', float : 'left'}}>{cartList[i].price}</div>
+                  </div>
+                  <div>
+                    <div style={{textAlign : 'left', width :'80%', float : 'left'}}>배송비</div>
+                    <div style={{width : '20%', float : 'left'}}>무료</div>
+                  </div>
+                  <div>
+                    <div style={{textAlign : 'left', width :'80%', float : 'left'}}>총 결제금액</div>
+                    <div style={{width : '20%', float : 'left'}}>{cartList[i].price}</div>
+                  </div>
+                </div>   
+                <div style={{width : '90%', float : 'left'}}>
+                  <div style={{width : '50%', float : 'left'}}>
+                    <button>바로구매</button>
+                  </div>
+                  <div style={{width : '50%', float : 'left'}}>
+                    <button>상품 추가</button>
+                  </div>
+                </div>
               </div>
-              <div>결제금액 : {cartList[i].price} </div>
-              <button>바로구매</button> <button>상품 추가</button>
+
               <hr/>
             </>
           )
         })
         }
-        <div>
+        <div style={{width : '100%'}}>
           <div>총 상품금액</div>
           <div>총 배송비</div>
           <div>총 결제예상금액</div>
