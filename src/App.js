@@ -1,15 +1,19 @@
 import './App.css'
 import { Button, Navbar, Container, Nav } from 'react-bootstrap'
 import { useState } from 'react'
-import data from './data.js'
-import { ProductList, DetailPage } from './pages/productList'
+import { ProductList } from './pages/product'
+import { DetailPage, DetailBottom } from './pages/detail'
+
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from 'axios'
-import { Header, TopMenu, IndividualIntervals, HorizontalCategory, CommonHeader, RecommendArea, BottomMenu } from './pages/bootstrap.js'
-import { HistoryBack } from './function/function'
+import { MainHeader, TopMenu, IndividualIntervals, HorizontalCategory, RecommendArea, CommonHeaderMain } from './pages/main.js'
+import { BottomMenu }  from './pages/common.js'
+import { CommonHeaderDetail } from './pages/common.js'
+
+import { CartHeader, CartMain } from './pages/cart.js'
+import { HistoryBack, MyPage } from './function/function'
 
 function App() {
-  let [shoes, setShoes] = useState(data)
   let navigate = useNavigate()
 
   return (
@@ -18,21 +22,28 @@ function App() {
       <Routes>
         <Route path="/" element={
           <>
-            <Header />
-            <TopMenu />
-            <IndividualIntervals />
-            <HorizontalCategory />
-            <RecommendArea />
+            <MainHeader />
+            <div style={{paddingTop : '60px'}}>
+            {/* <div style={{height : "85.6%", overflow : 'scroll'}}> */}
+              <TopMenu />
+              <IndividualIntervals />
+              <HorizontalCategory />
+              <RecommendArea />
+              테스트<br/>
+              테스트<br/>
+              테스트<br/>테스트<br/>테스트<br/>테스트<br/>테스트<br/>테스트<br/>
+              테스트<br/>테스트<br/>테스트<br/>
+            </div>
             <BottomMenu />
-            <br/><br/><br/><br/><br/>
-           </>
+            
+          </>
         }
         />
         
         <Route path="/clothes" element={
           <div>
             <div style={{textAlign : "left"}}>
-              <CommonHeader />              
+              <CommonHeaderDetail />              
             </div><Outlet></Outlet>
           </div>}>
         
@@ -66,9 +77,14 @@ function App() {
 
         <Route path="/clothes/shoes/:id" element={
           <>
-            <CommonHeader />
+            <CommonHeaderDetail />
             <DetailPage/>
           </>}></Route>
+        
+        <Route path='/board' element={
+          <div>게시핀</div>
+        }>
+        </Route>
 
         <Route path="/about" element={
             <div>
@@ -78,6 +94,31 @@ function App() {
         >
           <Route path="member" element={<div>member페이지</div>} />
           <Route path="location" element={<div>location페이지</div>} />
+        </Route>
+        
+        <Route path="/mypage" element={ 
+        <>
+          <CommonHeaderMain /> 
+          <MyPage />
+          <BottomMenu />
+        </>}>
+        </Route>
+
+        <Route path="/mypage/:id" element={
+          <>
+            <CommonHeaderMain /> 
+            <MyPage />
+            <BottomMenu />
+          </>}></Route>
+
+        <Route path="/cart" element={
+          <div>
+            <CartHeader />
+            <CartMain />
+          </div>
+
+        }>
+
         </Route>
 
         <Route path="/event" element={
