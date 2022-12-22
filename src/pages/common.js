@@ -4,7 +4,7 @@ import { ImSearch } from 'react-icons/im'
 import { BsCart4 } from 'react-icons/bs'
 import { useState, useEffect } from 'react'
 import { AiTwotoneHome } from 'react-icons/ai'
-import { FaDog, FaStore, FaCompass, FaHeart, FaUserCircle, FaClipboard } from 'react-icons/fa'
+import { FaStore, FaHeart, FaUserCircle, FaClipboard } from 'react-icons/fa'
 
 function CommonHeaderDetail(){
     const navigate = useNavigate()

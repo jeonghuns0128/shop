@@ -8,6 +8,7 @@ import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import axios from 'axios'
 import { MainHeader, TopMenu, IndividualIntervals, HorizontalCategory, RecommendArea, CommonHeaderMain } from './pages/main.js'
 import { BottomMenu }  from './pages/common.js'
+import { BoardTop, BoardWriteButton, BoardWrite, BoardWriteTop, BoardMainList }  from './pages/board.js'
 import { CommonHeaderDetail } from './pages/common.js'
 
 import { CartHeader, CartMain } from './pages/cart.js'
@@ -82,9 +83,35 @@ function App() {
           </>}></Route>
         
         <Route path='/board' element={
-          <div>게시핀</div>
+          <>
+            <BoardTop />
+            <BoardMainList />
+            <BoardWriteButton />
+            <BottomMenu />
+          </>
         }>
         </Route>
+
+        <Route path='/board/write' element={
+          <>
+            <BoardWriteTop />
+            <BoardWrite />
+          </>
+        }></Route>
+
+        <Route path='like' element={
+          <>
+            <div>찜하기</div>
+            <BottomMenu />
+          </>
+        }></Route>
+
+        <Route path='store' element={
+          <>
+            <div>스토어</div>
+            <BottomMenu />
+          </>
+        }></Route>
 
         <Route path="/about" element={
             <div>
