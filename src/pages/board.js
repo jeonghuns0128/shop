@@ -12,7 +12,7 @@ function BoardMainList(){
     
     let [boardList, setBoardList] = useState([]);
     useEffect(() => {
-        axios.get('http://localhost:3000/boards/').then((result) => {
+        axios.get(process.env.REACT_APP_API_URL + '/boards/').then((result) => {
         console.log('boards : ' + result.data)
         setBoardList(result.data)
         })
@@ -100,7 +100,7 @@ function BoardWriteButton(){
 function BoardWrite() {
     return (
       <div style={{marginTop : '55px'}}>
-        <form action='http://localhost:3000/board/write' method='POST' id='boardWrite'>
+        <form action={process.env.REACT_APP_API_URL + '/board/write' } method='POST' id='boardWrite'>
             <FloatingLabel
             controlId="title"
             name="title"

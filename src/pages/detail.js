@@ -53,7 +53,7 @@ function DivPage() {
     //console.log("props : " + props.shoes[id]);
     
     useEffect(() => {
-      axios.get('http://localhost:3000/clothes/shoes/' + id).then((result) => {
+      axios.get(process.env.REACT_APP_API_URL + '/clothes/shoes/' + id).then((result) => {
       console.log('front : ' + result.data)
       setProduct(result.data)
       })

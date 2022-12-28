@@ -32,7 +32,7 @@ function MyPage() {
     let [accessToken, setAccessToken] = useState()
 
     useEffect(() => {
-        axios.get('http://localhost:3000/login/success',{withCredentials : true}).then((result) => {
+        axios.get(process.env.REACT_APP_API_URL + '/login/success',{withCredentials : true}).then((result) => {
         console.log('login : ' + JSON.stringify(result.data))
         console.log('login : ' + JSON.stringify(result.data.passport.user.id))
         //setProduct(result.data)
@@ -71,7 +71,7 @@ function MyPage() {
                     <div style={{textAlign :'left', fontSize : '13px', paddingLeft : '10px'}}> email 정보 </div>  
                 </div> 
                 <div style={{width : '30%', height : '50px', float : 'left', textAlign : 'center', fontSize : '13px'}} onClick={() => {
-                    axios.get('http://localhost:3000/logout/kakao').then((result) => {
+                    axios.get(process.env.REACT_APP_API_URL + '/logout/kakao').then((result) => {
                         //logout 세션에 제대로 안담기는 중
                         console.log('login : ' + JSON.stringify(result.data))
                         setIsLogin(false)
@@ -118,7 +118,7 @@ function LoginMainModal(){
             </div> */}
 
             <div style={{textAlign : 'center'}}>
-                <a href="http://localhost:3000/auth/kakao">
+                <a href={process.env.REACT_APP_API_URL + "/auth/kakao"}>
                     <img src={process.env.PUBLIC_URL + './kakao_login_medium_wide.png'} />
                 </a>
             </div>

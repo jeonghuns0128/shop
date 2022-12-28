@@ -17,7 +17,7 @@ function ProductList(props) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        axios.get('http://localhost:3000/clothes/shoes/').then((result) => {
+        axios.get(process.env.REACT_APP_API_URL + '/clothes/shoes/').then((result) => {
         console.log('front : ' + result.data)
         setProduct(result.data)
         })
@@ -53,7 +53,7 @@ function ProductList(props) {
 }
 
 function Test(){
-    
+
 }
 
 export { ProductList, Test }
