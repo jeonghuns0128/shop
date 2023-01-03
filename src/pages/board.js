@@ -22,34 +22,34 @@ function BoardMainList(){
     }, [])
 
     return(
-        <div style={{marginTop : '55px'}}>
+        <div style={{marginTop : '55px', width : '100%'}}>
             {boardList && boardList.map(boardList => {
             return(
                 <>
                 <div>
-                    <div style={{textAlign : 'left', marginLeft : '15px', marginRight : '15px', marginTop : '15px', width : '100%'}}>
-                        <div style={{float : 'left', width : '10%'}}><BsChatTextFill size="30px"/></div>
-                        <div style={{float : 'left', width : '90%'}}>
-                            <div style={{textAlign : 'left'}}>
-                                <div style={{float : 'left', fontSize : '13px'}}>썸 연애</div>
-                                <div style={{fontSize : '11px'}}>4시간</div>
+                    <div style={{textAlign : 'left', height : '45px'}}>
+                        <div style={{float : 'left', width : '10%', marginLeft : '10px', height : '40px'}}><BsChatTextFill size="30px"/></div>
+                        <div style={{float : 'left', width : '80%', height : '40px'}}>
+                            <div style={{textAlign : 'left', marginLeft : '10px', height : '20px'}}>
+                                <div style={{float : 'left', fontSize : '13px', width : '25%'}}>{boardList.category}</div>
+                                <div style={{fontSize : '11px', width : '80%', paddingTop : '1px'}}>4시간</div>
                             </div>
-                            <div style={{textAlign : 'left'}}>
-                                <div style={{float : 'left', fontSize : '13px', }}>공무원</div>
-                                <div style={{fontSize : '11px'}}>jeonghuns0128</div>
+                            <div style={{textAlign : 'left', marginLeft : '10px', height : '20px'}}>
+                                <div style={{float : 'left', fontSize : '13px', width : '25%'}}>{boardList.company}</div>
+                                <div style={{fontSize : '11px', width : '80%', paddingTop : '1px'}}>{boardList.user_id}</div>
                             </div>
                         </div>
                     </div>
-                    <div style={{textAlign : 'left', marginLeft : '15px', marginRight : '15px', marginTop : '15px', width : '100%'}}>
-                        <div>{boardList.title}</div>
-                        <div>{boardList.content}</div>
+                    <div style={{textAlign : 'left', width : '350px', height : '60px', marginTop : '-10px'}}>
+                        <div style={{paddingLeft : '10px', fontSize : '21px', textOverflow : 'ellipsis', overflow : 'hidden', whiteSpace : 'nowrap', marginBottom : '5px'}}>{boardList.title}</div>
+                        <div style={{paddingLeft : '10px', textOverflow : 'ellipsis', overflow : 'hidden', whiteSpace : 'nowrap'}}>{boardList.content}</div>
                     </div>
-                    <div style={{width : '100%'}}>
-                        <div style={{width: "calc(100%/3)", float : 'left'}}><FiHeart size="20px" /> 4</div>
-                        <div style={{width: "calc(100%/3)", float : 'left'}}><BsChatSquareText size="20px" /> 16</div>
-                        <div style={{width: "calc(100%/3)", float : 'left'}}><AiOutlineEye size="20px"/>2314</div>
+                    <div style={{width : '100%', marginTop : '13px'}}>
+                        <div style={{width: "calc(100%/3)", float : 'left'}}><FiHeart size="20px" /> {boardList.like_cnt}</div>
+                        <div style={{width: "calc(100%/3)", float : 'left'}}><BsChatSquareText size="20px" /> {boardList.review_cnt}</div>
+                        <div style={{width: "calc(100%/3)", float : 'left'}}><AiOutlineEye size="20px"/> {boardList.view_cnt}</div>
                     </div>
-                    <hr style={{marginTop : '30px'}}/>
+                    <hr style={{marginTop : '41px'}}/>
                 </div>
                 </>
             )
@@ -61,7 +61,7 @@ function BoardMainList(){
 function BoardTop(){
     return(
       <>
-        <div className="wrapperTop" style={{textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden"}}>
+        <div className="wrapperTop" style={{width:'100%', textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden"}}>
           <div style={{width : '20%', float : 'left', paddingTop : '5px'}}>
             <HistoryBack />
           </div>
@@ -91,15 +91,15 @@ function BoardTop(){
 function BoardWriteButton(){
     const navigate = useNavigate()
     return(
-        <div style={{marginRight : '10px', position: "absolute", right: "0px", bottom: "50px"}}>
-            <BsPencilSquare size="40px" onClick={() => {navigate('/board/write')}} />
+        <div style={{marginRight : '10px', position: "fixed", right: "0px", bottom: "50px"}}>
+            <BsPencilSquare size="60px" onClick={() => {navigate('/board/write')}} />
         </div>
     )
 } 
 
 function BoardWrite() {
     return (
-      <div style={{marginTop : '55px'}}>
+      <div style={{marginTop : '55px', width : '100%'}}>
         <form action={process.env.REACT_APP_API_URL + '/board/write' } method='POST' id='boardWrite'>
             <FloatingLabel
             controlId="title"
