@@ -10,6 +10,7 @@ import { MainHeader, TopMenu, IndividualIntervals, HorizontalCategory, Recommend
 import { BottomMenu }  from './pages/common.js'
 import { BoardTop, BoardWriteButton, BoardWrite, BoardWriteTop, BoardMainList }  from './pages/board.js'
 import { CommonHeaderDetail } from './pages/common.js'
+import { SearchHeader } from './pages/search'
 
 import { CartHeader, CartMain } from './pages/cart.js'
 import { HistoryBack, MyPage } from './function/function'
@@ -30,10 +31,6 @@ function App() {
               <IndividualIntervals />
               <HorizontalCategory />
               <RecommendArea />
-              테스트<br/>
-              테스트<br/>
-              테스트<br/>테스트<br/>테스트<br/>테스트<br/>테스트<br/>테스트<br/>
-              테스트<br/>테스트<br/>테스트<br/>
             </div>
             <BottomMenu />
             
@@ -41,7 +38,7 @@ function App() {
         }
         />
         
-        <Route path="/clothes" element={
+        <Route path="/product/clothes" element={
           <div>
             <div style={{textAlign : "left"}}>
               <CommonHeaderDetail />              
@@ -76,7 +73,7 @@ function App() {
           </Route> */}
         </Route>
 
-        <Route path="/clothes/shoes/:id" element={
+        <Route path="/product/clothes/shoes/:id" element={
           <>
             <CommonHeaderDetail />
             <DetailPage/>
@@ -96,6 +93,18 @@ function App() {
           <>
             <BoardWriteTop />
             <BoardWrite />
+          </>
+        }></Route>
+
+        <Route path='/board/detail' element={
+          <>
+            <div>게시판 상세</div>
+          </>
+        }></Route>
+
+        <Route path='/search' element={
+          <>
+            <SearchHeader />
           </>
         }></Route>
 
