@@ -14,12 +14,35 @@ let cart = createSlice({
     }
 })
 
+let search = createSlice({
+    name : 'search',
+    //'상품명', '수량', '금액'
+    initialState : [],
+    reducers : {
+        searchList(state, action){
+            //state는 기존 initialState값
+            //배열에 상품 추가해주고 리턴
+            //state = []
+            console.log('state : ' + JSON.stringify(state))
+            console.log('lenght : ' + state.length)
+            if(state.length === 0){
+                state.push(action.payload)
+            }else{
+                state = []
+                state.push(action.payload)
+            }
+        }
+    }
+})
+
 export let {changeCartList} = cart.actions
+export let {searchList} = search.actions
 
 export default configureStore({
 
     reducer : {
 
-        cart : cart.reducer
+        cart : cart.reducer,
+        search : search.reducer
     }
 })

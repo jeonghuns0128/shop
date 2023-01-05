@@ -10,7 +10,7 @@ import { MainHeader, TopMenu, IndividualIntervals, HorizontalCategory, Recommend
 import { BottomMenu }  from './pages/common.js'
 import { BoardTop, BoardWriteButton, BoardWrite, BoardWriteTop, BoardMainList }  from './pages/board.js'
 import { CommonHeaderDetail } from './pages/common.js'
-import { SearchHeader } from './pages/search'
+import { SearchHeader, SearchMain } from './pages/search'
 
 import { CartHeader, CartMain } from './pages/cart.js'
 import { HistoryBack, MyPage } from './function/function'
@@ -105,6 +105,7 @@ function App() {
         <Route path='/search' element={
           <>
             <SearchHeader />
+            <SearchMain />
           </>
         }></Route>
 
