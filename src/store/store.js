@@ -22,21 +22,24 @@ let search = createSlice({
         searchList(state, action){
             //state는 기존 initialState값
             //배열에 상품 추가해주고 리턴
-            //state = []
-            console.log('state : ' + JSON.stringify(state))
-            console.log('lenght : ' + state.length)
+            //state = Object.assign(action.payload)
             if(state.length === 0){
                 state.push(action.payload)
             }else{
-                state = []
+                state.pop()
                 state.push(action.payload)
+            }
+        },
+        searchListReset(state,action){
+            if(state.length > 0){
+                state.pop()
             }
         }
     }
 })
 
 export let {changeCartList} = cart.actions
-export let {searchList} = search.actions
+export let {searchList, searchListReset} = search.actions
 
 export default configureStore({
 
