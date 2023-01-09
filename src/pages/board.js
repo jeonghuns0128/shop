@@ -7,20 +7,27 @@ import { FiHeart } from 'react-icons/fi'
 import { useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
+import { useDispatch, useSelector } from 'react-redux'
+import { boardData } from '../store/store'
+import { ImSearch } from 'react-icons/im'
+import { searchList } from '../store/store'
 
 function BoardMainList(){
     
+    const navigate = useNavigate();
     let [boardList, setBoardList] = useState([]);
     useEffect(() => {
-        axios.get(process.env.REACT_APP_API_URL + '/boards/').then((result) => {
-        console.log('boards : ' + result.data)
-        setBoardList(result.data)
+        axios.get(process.env.REACT_APP_API_URL + '/board/').then((result) => {
+        setBoardList(result.data.board)
         })
         .catch(() => {
             console.log('실패')
         })
     }, [])
-
+    // MdOutlineHomeWork 직장
+    // RiHeartsFill 연애
+    // BsChatTextFill 자유
+    // 인생
     return(
         <div style={{marginTop : '55px', width : '100%'}}>
             {boardList && boardList.map(boardList => {
@@ -31,23 +38,25 @@ function BoardMainList(){
                         <div style={{float : 'left', width : '10%', marginLeft : '10px', height : '40px'}}><BsChatTextFill size="30px"/></div>
                         <div style={{float : 'left', width : '80%', height : '40px'}}>
                             <div style={{textAlign : 'left', marginLeft : '10px', height : '20px'}}>
-                                <div style={{float : 'left', fontSize : '13px', width : '25%'}}>{boardList.category}</div>
+                                <div style={{float : 'left', fontSize : '13px', width : '25%'}}>{boardList._source.category}</div>
                                 <div style={{fontSize : '11px', width : '80%', paddingTop : '1px'}}>4시간</div>
                             </div>
                             <div style={{textAlign : 'left', marginLeft : '10px', height : '20px'}}>
-                                <div style={{float : 'left', fontSize : '13px', width : '25%'}}>{boardList.company}</div>
-                                <div style={{fontSize : '11px', width : '80%', paddingTop : '1px'}}>{boardList.user_id}</div>
+                                <div style={{float : 'left', fontSize : '13px', width : '25%'}}>{boardList._source.company}</div>
+                                <div style={{fontSize : '11px', width : '80%', paddingTop : '1px'}}>{boardList._source.user_id}</div>
                             </div>
                         </div>
                     </div>
                     <div style={{textAlign : 'left', width : '350px', height : '60px', marginTop : '-10px'}}>
-                        <div style={{paddingLeft : '10px', fontSize : '21px', textOverflow : 'ellipsis', overflow : 'hidden', whiteSpace : 'nowrap', marginBottom : '5px'}}>{boardList.title}</div>
-                        <div style={{paddingLeft : '10px', textOverflow : 'ellipsis', overflow : 'hidden', whiteSpace : 'nowrap'}}>{boardList.content}</div>
+                        <div onClick={() => {navigate("/board/detail")}}>
+                            <div style={{paddingLeft : '10px', fontSize : '21px', textOverflow : 'ellipsis', overflow : 'hidden', whiteSpace : 'nowrap', marginBottom : '5px'}}>{boardList._source.title}</div>
+                            <div style={{paddingLeft : '10px', textOverflow : 'ellipsis', overflow : 'hidden', whiteSpace : 'nowrap'}}>{boardList._source.content}</div>
+                        </div>
                     </div>
                     <div style={{width : '100%', marginTop : '13px'}}>
-                        <div style={{width: "calc(100%/3)", float : 'left'}}><FiHeart size="20px" /> {boardList.like_cnt}</div>
-                        <div style={{width: "calc(100%/3)", float : 'left'}}><BsChatSquareText size="20px" /> {boardList.review_cnt}</div>
-                        <div style={{width: "calc(100%/3)", float : 'left'}}><AiOutlineEye size="20px"/> {boardList.view_cnt}</div>
+                        <div style={{width: "calc(100%/3)", float : 'left'}}><FiHeart size="20px" /> {boardList._source.like_cnt}</div>
+                        <div style={{width: "calc(100%/3)", float : 'left'}}><BsChatSquareText size="20px" /> {boardList._source.review_cnt}</div>
+                        <div style={{width: "calc(100%/3)", float : 'left'}}><AiOutlineEye size="20px"/> {boardList._source.view_cnt}</div>
                     </div>
                     <hr style={{marginTop : '41px'}}/>
                 </div>
@@ -59,29 +68,35 @@ function BoardMainList(){
 }
 
 function BoardTop(){
+
+    let [keyword, setKeyword] = useState()
+    //let searchList = useSelector((state)=>{return state.search})
+    let dispatch = useDispatch()  
+    
     return(
       <>
-        <div className="wrapperTop" style={{width:'100%', textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden"}}>
-          <div style={{width : '20%', float : 'left', paddingTop : '5px'}}>
+        <div className="wrapperTop" style={{textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden", width : '100%'}}>
+          <div style={{width : '10%', height : '45px', float : 'left', paddingTop : '5px'}}>
             <HistoryBack />
           </div>
-          <div style={{color : 'white', width : '60%', float : 'left', textAlign : 'center', paddingTop : '5px', fontSize : '20px'}}>게시판</div>
-        </div>
-      </>
-    )
-  }
-
-  function BoardWriteTop(){
-    const navigate = useNavigate()
-    return(
-      <>
-        <div className="wrapperTop" style={{textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden"}}>
-          <div style={{width : '20%', color : 'white', float : 'left', textAlign : 'center', paddingTop : '10px', fontSize : '15px'}} onClick={() => {
-            navigate(-1)
-          }}>취소</div>
-          <div style={{color : 'white', width : '60%', float : 'left', textAlign : 'center', paddingTop : '5px', fontSize : '20px'}}>게시판</div>
-          <div style={{width : '20%', color : 'white', float : 'left', textAlign : 'center', paddingTop : '10px', fontSize : '15px'}}>
-            <button type='submit' form='boardWrite'>등록</button>
+          
+          <div style={{position: 'relative', color : 'gray', width : '90%', height : '45px', float : 'left', textAlign : 'left', paddingTop : '5px', fontSize : '20px'}}>
+            <input type="text" name="keyword" onChange={(e)=>{setKeyword(e.target.value)}} placeholder='관심 있는 글 검색' style={{width : '320px', border: "1px solid white", borderRadius: "15px", backgroundColor : 'white', color : 'black', fontSize : '17px'}} />
+                <button onClick={() => {
+                    
+                    if(keyword === undefined){
+                        alert('검색어를 입력해주세요.')
+                    }else{
+                        axios.get(process.env.REACT_APP_API_URL + '/board/search/' + keyword).then((result) => {
+                            dispatch(searchList(result.data))
+                            })
+                            .catch(() => {
+                                console.log('실패')
+                            })
+                    }
+                }} style={{backgroundColor : 'white', position : 'absolute', width: '40px', top: '5px', left : '269px', margin: '0', border : '0', height : '0px', marginTop : '3px'}}>
+                    <ImSearch size="22px" style={{marginBottom : '10px'}}/>
+                </button>
           </div>
         </div>
       </>
@@ -92,11 +107,73 @@ function BoardWriteButton(){
     const navigate = useNavigate()
     return(
         <div style={{marginRight : '10px', position: "fixed", right: "0px", bottom: "50px"}}>
-            <BsPencilSquare size="60px" onClick={() => {navigate('/board/write')}} />
+            <BsPencilSquare size="50px" onClick={() => {navigate('/board/write')}} />
         </div>
     )
 } 
 
+// function BoardWriteTop_MysqlVersion(){
+//     const navigate = useNavigate()
+//     return(
+//       <>
+//         <div className="wrapperTop" style={{textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden"}}>
+//           <div style={{width : '20%', color : 'white', float : 'left', textAlign : 'center', paddingTop : '10px', fontSize : '15px'}} onClick={() => {
+//             navigate(-1)
+//           }}>취소</div>
+//           <div style={{color : 'white', width : '60%', float : 'left', textAlign : 'center', paddingTop : '5px', fontSize : '20px'}}>게시판</div>
+//           <div style={{width : '20%', color : 'white', float : 'left', textAlign : 'center', paddingTop : '10px', fontSize : '15px'}}>
+//             <button type='submit' form='boardWrite'>등록</button>
+//           </div>
+//         </div>
+//       </>
+//     )
+//   }
+
+// function BoardWrite_MysqlVersion() {
+//     return (
+//       <div style={{marginTop : '55px', width : '100%'}}>
+//         <form action={process.env.REACT_APP_API_URL + '/board/write' } method='POST' id='boardWrite'>
+//             <FloatingLabel
+//             controlId="title"
+//             name="title"
+//             id="title"
+//             label="제목"
+//             className="mb-3"
+//             >
+//                 <Form.Control as="textarea" placeholder="Leave a comment here" name="title" id="title"/>
+//             </FloatingLabel>
+//             <FloatingLabel controlId="content" id="content" label="내용" name="content">
+//                 <Form.Control
+//                     as="textarea"
+//                     placeholder="Leave a comment here"
+//                     style={{ height: '510px' }}
+//                     name="content"
+//                     id="content"
+//                 />
+//             </FloatingLabel>
+//         </form>
+//       </div>
+//     );
+//   }
+
+  function BoardWriteTop(){
+    const navigate = useNavigate()
+    
+    return(
+      <>
+        <div className="wrapperTop" style={{textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden"}}>
+          <div style={{width : '20%', color : 'white', float : 'left', textAlign : 'center', paddingTop : '10px', fontSize : '15px'}} onClick={() => {
+            navigate(-1)
+          }}>취소</div>
+          <div style={{color : 'white', width : '60%', float : 'left', textAlign : 'center', paddingTop : '5px', fontSize : '20px'}}>게시판</div>
+          <div style={{width : '20%', color : 'white', float : 'left', textAlign : 'center', paddingTop : '10px', fontSize : '15px'}}>
+          <button type='submit' form='boardWrite'>등록</button>
+          </div>
+        </div>
+      </>
+    )
+  }
+  
 function BoardWrite() {
     return (
       <div style={{marginTop : '55px', width : '100%'}}>
