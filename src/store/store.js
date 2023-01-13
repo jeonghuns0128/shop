@@ -38,35 +38,14 @@ let search = createSlice({
     }
 })
 
-let board = createSlice({
-    name : 'board',
-    initialState : [],
-    reducers : {
-        boardData(state, action){
-            //state는 기존 initialState값
-            //배열에 상품 추가해주고 리턴
-            //state = Object.assign(action.payload)
-            
-            if(state.length === 0){
-                state.push(action.payload)
-            }else{
-                state.pop()
-                state.push(action.payload)
-            }
-        }
-    }
-})
-
 export let {changeCartList} = cart.actions
 export let {searchList, searchListReset} = search.actions
-export let {boardData} = board.actions
 
 export default configureStore({
 
     reducer : {
 
         cart : cart.reducer,
-        search : search.reducer,
-        board : board.reducer
+        search : search.reducer
     }
 })
