@@ -119,7 +119,7 @@ function LoginMainModal(){
 
             <div style={{textAlign : 'center'}}>
                 <a href={process.env.REACT_APP_API_URL + "/auth/kakao"}>
-                    <img src={process.env.PUBLIC_URL + './kakao_login_medium_wide.png'} />
+                    <img src={process.env.REACT_APP_AWS_S3_URL + '/board/kakao_login_medium_wide.png'}/>
                 </a>
             </div>
             <div style={{textAlign : 'center', marginTop : '10px'}}>
