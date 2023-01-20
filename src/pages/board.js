@@ -36,7 +36,7 @@ function BoardKeywordSearch(){
     const navigate = useNavigate()
 
     return(
-        <div style={{marginTop : '55px', width : '100%'}}>
+        <div style={{width : '100%'}}>
             <div style={{textAlign : 'left'}}>검색 결과 {searchResultCnt}건</div>
             {searchResultList && searchResultList.map(searchResultList => {
             return(
@@ -92,7 +92,26 @@ function BoardAllSearch(){
     // BsChatTextFill 자유
     // 인생
     return(
-        <div style={{marginTop : '55px', width : '100%'}}>
+        <div style={{width : '100%'}}>
+
+            <div style={{marginTop : '50px', textAlign : "right"}}>
+                <div style={{float : 'left', marginLeft : '220px'}}>
+                    <button onClick={() => {
+                        axios.get(process.env.REACT_APP_API_URL + '/board?sort=0').then((result) => {
+                            setBoardList(result.data.board)
+                            console.log(result.data.board)
+                            //dispatch 적용해야할듯?
+                            })
+                            .catch(() => {
+                                console.log('실패')
+                            })
+                    }}>좋아요순</button>
+                </div>
+                <div style={{marginRight : '10px'}}>
+                    <button>리뷰순</button>
+                </div>
+            </div>
+
             {boardList && boardList.map(boardList => {
             return(
                 <>
@@ -266,6 +285,9 @@ function BoardWrite() {
 
   function BoardDetailTop(){
 
+    let [isOpen, setIsOpen] = useState(false)
+
+
     return(
       <>
         <div className="wrapperTop" style={{textAlign : 'left', height : '45px',backgroundColor : 'black', overflow: "hidden", width : '100%'}}>
@@ -275,7 +297,10 @@ function BoardWrite() {
           <div style={{textAlign : 'right', marginTop : '6px'}}>
             <FiBellOff size="30px" color='white' style={{marginRight : '10px'}} />
             <BsBookmark size="30px" color='white' style={{marginRight : '10px'}} />
-            <TfiMore size="30px" color='white' style={{marginRight : '10px'}} />
+            <TfiMore onClick={() => {
+                setIsOpen(!isOpen)
+                }} size="30px" color='white' style={{marginRight : '10px'}} />
+            {isOpen ? <MoreButton /> : null}
           </div>
         </div>
       </>
@@ -318,6 +343,18 @@ function BoardWrite() {
                 </>
             }
         </>
+    )
+  }
+
+  function MoreButton(){
+    return(
+     <>
+        <div style={{marginTop : "300px"}}>
+            <div>수정하기</div>
+            <div>삭제하기</div>
+            <div>취소</div>
+        </div>
+     </>   
     )
   }
 
