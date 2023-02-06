@@ -38,14 +38,32 @@ let search = createSlice({
     }
 })
 
+let keyword = createSlice({
+    name : 'keyword',
+    //'상품명', '수량', '금액'
+    initialState : [],
+    reducers : {
+        searchKeyword(state,action){
+            if(state.length === 0){
+                state.push(action.payload)
+            }else{
+                state.pop()
+                state.push(action.payload)
+            }
+        }
+    }
+})
+
 export let {changeCartList} = cart.actions
 export let {searchList, searchListReset} = search.actions
+export let {searchKeyword} = keyword.actions
 
 export default configureStore({
 
     reducer : {
 
         cart : cart.reducer,
-        search : search.reducer
+        search : search.reducer,
+        keyword : keyword.reducer
     }
 })
