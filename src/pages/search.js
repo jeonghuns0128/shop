@@ -8,8 +8,10 @@ import { useNavigate } from 'react-router-dom'
 import { HistoryBack } from '../function/function'
 import CloseButton from 'react-bootstrap/CloseButton';
 import axios from 'axios'
-import { searchList } from '../store/store'
+import { searchKeyword, searchList } from '../store/store'
 import { AiFillStar, AiOutlineCheck } from 'react-icons/ai'
+import { CgSearchLoading } from 'react-icons/cg'
+
 
 function SearchHeader(){
 
@@ -42,6 +44,7 @@ function SearchHeader(){
                     }else{
                         axios.get(process.env.REACT_APP_API_URL + '/search/' + keyword).then((result) => {
                             dispatch(searchList(result.data))
+                            dispatch(searchKeyword(keyword))
                             })
                             .catch(() => {
                                 console.log('실패')
@@ -71,25 +74,71 @@ function SearchMain(){
 }
 
 function SearchEmpty(){
+    let searchKeyword = useSelector((state)=>{return state.keyword})
     return(
-        <div style={{marginTop : '50px'}}>검색결과 없음</div>
+        <>
+        <div style={{marginTop : '250px'}}>'<span style={{color : 'red', fontSize : '20px'}}>{searchKeyword[0]}</span>'에 대한 검색결과가 없습니다.</div>
+        <div><CgSearchLoading size="100px" /></div>
+        </>
     )
 }
 
 function SearchDetail() {
     let searchResult = useSelector((state)=>{return state.search})
+    let searchKeyword = useSelector((state)=>{return state.keyword})
     let searchResultCnt = searchResult[0].totcnt
     let searchResultList = searchResult[0].keyword
+    let dispatch = useDispatch()
     let navigate = useNavigate()
+
     return(
         <>
-        <div style={{marginTop : '50px', textAlign : 'left', marginLeft : '10px', marginBottom : '10px'}}>검색 결과 : {searchResultCnt}건</div>
-        
+        <div style={{marginTop : '50px', textAlign : 'left', marginLeft : '10px', marginBottom : '10px'}}>'<span style={{color : 'red', fontSize : '20px'}}>{searchKeyword}</span>'에 대한 검색 결과 : {searchResultCnt}건</div>
+        <div style={{marginBottom : '10px'}}>
+            <div style={{textAlign : 'left', marginLeft : '5px', float : 'left'}}>쿠팡 랭킹순</div>
+            <div style={{textAlign : 'left', float : 'left'}}>&nbsp;|&nbsp;</div>
+            <div style={{textAlign : 'left', float : 'left'}} onClick={()=>{
+                axios.get(process.env.REACT_APP_API_URL + '/search/' + searchKeyword[0] + '?sort=0').then((result) => {
+                //axios.get(process.env.REACT_APP_API_URL + '/search/노트북?sort=0').then((result) => {
+                    dispatch(searchList(result.data))
+                    })
+                    .catch(() => {
+                        console.log('실패')
+                    })
+            }}>낮은가격순</div>
+            <div style={{textAlign : 'left', float : 'left'}}>&nbsp;|&nbsp;</div>
+            <div style={{textAlign : 'left', float : 'left'}} onClick={()=>{
+                axios.get(process.env.REACT_APP_API_URL + '/search/' + searchKeyword[0] + '?sort=1').then((result) => {
+                    dispatch(searchList(result.data))
+                    })
+                    .catch(() => {
+                        console.log('실패')
+                    })
+            }}>높은가격순</div>
+            {/* <div style={{textAlign : 'left', float : 'left'}}>&nbsp;|&nbsp;</div>
+            <div style={{textAlign : 'left', float : 'left'}} onClick={()=>{
+                axios.get(process.env.REACT_APP_API_URL + '/search/' + searchKeyword[0] + '?sort=2').then((result) => {
+                    dispatch(searchList(result.data))
+                    })
+                    .catch(() => {
+                        console.log('실패')
+                    })
+            }}>최신순</div> */}
+            <div style={{textAlign : 'left', float : 'left'}}>&nbsp;|&nbsp;</div>
+            <div style={{textAlign : 'left'}} onClick={()=>{
+                axios.get(process.env.REACT_APP_API_URL + '/search/' + searchKeyword[0] + '?sort=3').then((result) => {
+                    dispatch(searchList(result.data))
+                    })
+                    .catch(() => {
+                        console.log('실패')
+                    })
+            }}>리뷰많은순</div>
+        </div>
         <div style={{ width : '100%'}}>
           {searchResultList && searchResultList.map(searchResultList => {
                 return(
                     <>
-                    <div style={{width : '100%', height : '160px', marginBottom : '20px'}} >
+                    <div style={{width : '100%', height : '160px', marginBottom : '20px'}} onClick={() => {navigate('/product/' + searchResultList._source.barcode)}} >
                         {/* onClick={() => {navigate('/product/clothes/shoes/' + searchResultList._source.id)}} */}
                         <div style={{width : '150px', height : '160px', float : 'left'}}>
                             {/* <img src={product.img_url} style={{maxWidth:'100%', maxHeight:'100%'}}/> */}
