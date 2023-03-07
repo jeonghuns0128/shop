@@ -34,6 +34,9 @@ let search = createSlice({
             if(state.length > 0){
                 state.pop()
             }
+        },
+        searchListAdd(state, action){
+            state.push(action.payload)
         }
     }
 })
@@ -60,7 +63,7 @@ let keyword = createSlice({
 })
 
 export let {changeCartList} = cart.actions
-export let {searchList, searchListReset} = search.actions
+export let {searchList, searchListReset, searchListAdd} = search.actions
 export let {searchKeyword, searchKeywordReset} = keyword.actions
 
 export default configureStore({
