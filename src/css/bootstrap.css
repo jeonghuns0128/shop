@@ -32,6 +32,21 @@
   text-align: left;
 }
 
+.modal_sns_purchase_box{
+  position: absolute;
+  top: calc(50vh - 100px); 
+  /* left: calc(50vw - 200px); */
+  background-color: white;
+  /* display: flex;  */
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  width: 100%;
+  height: 100px;
+  animation: fadeIn 1s ease-in-out;
+  text-align: left;
+}
+
 .wrapperTop {
   position: fixed;
   top: 0;

@@ -8,13 +8,19 @@ import { BsBookmark } from 'react-icons/bs'
 import { FiHeart, FiBellOff, FiShare } from 'react-icons/fi'
 
 import { useNavigate, useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { useDispatch, useSelector } from 'react-redux'
 import { boardData } from '../store/store'
 import { ImSearch } from 'react-icons/im'
 import { searchList } from '../store/store'
-
+import { FiX } from 'react-icons/fi'
+import {
+	FacebookShareButton,
+	FacebookIcon,
+	TwitterIcon,
+	TwitterShareButton,
+} from "react-share";
 
 function BoardMainList(){
     let searchResult = useSelector((state)=>{return state.search})
@@ -322,6 +328,21 @@ function BoardWrite() {
         })
     }, [])
 
+    const modalEl = useRef(); // 
+    const [isOpend, setIsOpend] = useState(false);
+      
+    const handleClickOutside = ({ target }) => {
+        if (isOpend && !modalEl.current.contains(target)) setIsOpend(false);
+            console.log("isopen : " + isOpend)
+        };
+      
+    useEffect(() => {
+        window.addEventListener("click", handleClickOutside);
+        return () => {
+            window.removeEventListener("click", handleClickOutside);
+        };
+    }, []);
+
     return(
         <>
             {boardData == null ? null :
@@ -338,12 +359,37 @@ function BoardWrite() {
                 <div style={{marginTop : '13px'}}>
                     <div style={{width: "calc(100%/3)", float : 'left'}}><FiHeart size="20px" /> {boardData.like_cnt}</div>
                     <div style={{width: "calc(100%/3)", float : 'left'}}><BsChatSquareText size="20px" /> {boardData.review_cnt}</div>
-                    <div style={{width: "calc(100%/3)", float : 'left'}}><FiShare size="20px"/> 공유하기</div>
+                    <div style={{width: "calc(100%/3)", float : 'left'}} onClick={()=>{setIsOpend(true)}}><FiShare size="20px"/> 공유하기</div>
                 </div>
+                { isOpend && <ModalSnsSelect ref={modalEl} isOpend={isOpend} setIsOpend={setIsOpend}/>}
                 </>
             }
         </>
     )
+  }
+
+  function ModalSnsSelect(props) {
+    
+    let dispatch = useDispatch()    
+
+    return (
+        <div className='modal_purchase_background'>
+            <div className='modal_sns_purchase_box'>
+                <div style={{textAlign : 'right', marginRight : '10px', marginTop : '10px'}} ><FiX onClick={() => {
+                    props.setIsOpend(false)
+                }} size="30px" /></div>
+                <div>
+                    <FacebookShareButton url="http://www.facebook.com/sharer/sharer.php?u=devpad.tistory.com/">
+                        <FacebookIcon size={48} round={true} borderRadius={24}></FacebookIcon>
+                    </FacebookShareButton>
+                    <TwitterShareButton url="https://twitter.com/intent/tweet?url=devpad.tistory.com/">
+                        <TwitterIcon size={48} round={true} borderRadius={24}></TwitterIcon>
+                    </TwitterShareButton>
+                </div>
+                
+            </div>
+        </div>
+    );
   }
 
   function MoreButton(){
