@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react'
 import { AiTwotoneHome } from 'react-icons/ai'
 import { FaStore, FaHeart, FaUserCircle, FaClipboard } from 'react-icons/fa'
 import { useDispatch } from 'react-redux'
-import { searchListReset } from '../store/store'
+import { searchKeyword, searchListReset } from '../store/store'
 
 function CommonHeaderDetail(){
     const navigate = useNavigate()
@@ -18,6 +18,7 @@ function CommonHeaderDetail(){
           <HistoryBack style={{height : "45px"}} />
           <ImSearch onClick={() => {
             dispatch(searchListReset())
+            dispatch(searchKeyword())
             navigate('/search')
             }} style={{marginLeft : "250px", marginRight : '10px', color : 'white', height : "45px"}} size="35" />
           <BsCart4 onClick={() => {navigate('/cart')}} style={{marginBottom : "5px", color : 'white', height : "45px"}} size="40" />
