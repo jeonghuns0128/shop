@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { BsCart4, BsCheckCircleFill } from 'react-icons/bs'
 import { FaRegCircle } from 'react-icons/fa'
 import { ImSearch } from 'react-icons/im'
@@ -11,19 +11,77 @@ import axios from 'axios'
 import { searchKeyword, searchList, searchListAdd } from '../store/store'
 import { AiFillStar, AiOutlineCheck } from 'react-icons/ai'
 import { CgSearchLoading } from 'react-icons/cg'
-
-function AutocompleteArea(){
-    return(
-        <>
-            <div>자동완성 영역</div>
-        </>
-    )
-}
+import styled from 'styled-components'
 
 function SearchHeader(){
 
     let [keyword, setKeyword] = useState()
-    let [isOpend, setIsOpend] = useState(false)
+    
+    const FrequencyEmails = [
+        '@naver.com',
+        '@gmail.com',
+        '@daum.net',
+        '@hanmail.net',
+        '@yahoo.com',
+        '@outlook.com',
+        '@nate.com',
+        '@kakao.com',
+      ];
+    const [email, setEmail] = useState(''); //이메일 input 값
+    const [emailList, setEmailList] = useState(FrequencyEmails); //추천 이메일 리스트를 확인, 이메일 리스트 상태 관리
+    const [selected, setSelected] = useState(-1); //키보드 선택
+    const [isDrobBox, setIsDropbox] = useState(false); // 드롭박스 유무
+    const inputRef = useRef(); //외부클릭 감지 확인
+    
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+          if (inputRef.current && !inputRef.current.contains(e.target)){
+            setIsDropbox(false);
+          }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+    }, [inputRef]);
+
+    const onChangeEmail = (e) => {
+        setKeyword(e.target.value);
+        setEmail(e.target.value);
+        
+        if (e.target.value.includes('@')) {
+          setIsDropbox(true);
+          setEmailList(
+            FrequencyEmails.filter((el) =>
+              el.includes(e.target.value.split('@')[1]),
+            ),
+          );
+        } else {
+          setIsDropbox(false);
+          setSelected(-1);
+        }
+    };
+
+    const handleDropDownClick = (first, second) => {
+        setEmail(`${first.split('@')[0]}${second}`);
+        setIsDropbox(false);
+        setSelected(-1);
+    };
+
+    const handleKeyUp = (e) => {
+        if (isDrobBox) {
+          if (e.key === 'ArrowDown' && emailList.length - 1 > selected) {
+            setSelected(selected + 1);
+          }
+          //emailList.length에 -1을 해주는 이유는 selected의 최대값을 맞춰주기 위해서이다.
+          //예를들어 밑에 emailList 2개가 나왔다고 가정했을 때, selected값이 최대 1까지 변할 수 있게 해줘야한다. 
+          //'ArrowDown'키를 누르면 selected는 0이 되고, 한번 더 누르면 1이 되고, 그 다음은 더이상 옵션이 없기 때문에 키가 안먹히게 해주는 것이다.
+    
+          if (e.key === 'ArrowUp' && selected >= 0) {
+            setSelected(selected - 1);
+          }
+          if (e.key === 'Enter' && selected >= 0) {
+            handleDropDownClick(email, emailList[selected]);
+          }
+        }
+    };
 
     //let searchList = useSelector((state)=>{return state.search})
     let dispatch = useDispatch()  
@@ -44,8 +102,11 @@ function SearchHeader(){
             </div>
           </form> */}
 
-          <div style={{position: 'relative', color : 'gray', width : '90%', height : '45px', float : 'left', textAlign : 'left', paddingTop : '5px', fontSize : '20px'}}>
-            <input type="text" name="keyword" onClick={(e)=>{ setIsOpend(true) }} onChange={(e)=>{setKeyword(e.target.value)}} placeholder='상품이나 스토어를 검색해보세요.' style={{width : '320px', border: "1px solid white", borderRadius: "15px", backgroundColor : 'white', color : 'black', fontSize : '17px'}} />
+          <div ref={inputRef} style={{position: 'relative', color : 'gray', width : '90%', height : '45px', float : 'left', textAlign : 'left', paddingTop : '5px', fontSize : '20px'}}>
+            <input type="text" name="keyword" value={email} onChange={(e) => {onChangeEmail(e);}} onKeyUp={handleKeyUp}
+            //onChange={(e)=>{setKeyword(e.target.value)}} 
+            placeholder='상품이나 스토어를 검색해보세요.' style={{width : '320px', border: "1px solid white", borderRadius: "15px", backgroundColor : 'white', color : 'black', fontSize : '17px'}} />
+                
                 <button onClick={() => {
                     
                     if(keyword === undefined){
@@ -64,10 +125,25 @@ function SearchHeader(){
                     <ImSearch size="22px" style={{marginBottom : '10px'}}/>
                 </button>
           </div>
-          {
-            isOpend === true ? <div>검색창</div> : null
-          }
         </div>
+        {isDrobBox && (
+            <div style={{marginTop : '50px', borderBottom: "2px solid", borderLeft: "2px solid", borderRight: "2px solid"}}>
+                {emailList.map((item, idx) => (
+                    <div
+                        key={idx}
+                        onMouseOver={() => setSelected(idx)}
+                        onClick={() => 
+                            //handleDropDownClick(email, item)
+                            alert(email)
+                        }
+                        selected={selected === idx}
+                        >
+                        {email.split('@')[0]}
+                        {item}
+                    </div>
+                    ))}
+            </div>
+        )}
       </>
     )
   }
@@ -100,10 +176,102 @@ function SearchMain(){
 
 function SearchEmpty(){
     let searchKeyword = useSelector((state)=>{return state.keyword})
+
+    const FrequencyEmails = [
+        '@naver.com',
+        '@gmail.com',
+        '@daum.net',
+        '@hanmail.net',
+        '@yahoo.com',
+        '@outlook.com',
+        '@nate.com',
+        '@kakao.com',
+      ];
+    const [email, setEmail] = useState(''); //이메일 input 값
+    const [emailList, setEmailList] = useState(FrequencyEmails); //추천 이메일 리스트를 확인, 이메일 리스트 상태 관리
+    const [selected, setSelected] = useState(-1); //키보드 선택
+    const [isDrobBox, setIsDropbox] = useState(false); // 드롭박스 유무
+    const inputRef = useRef(); //외부클릭 감지 확인
+    
+    useEffect(() => {
+        const handleClickOutside = (e) => {
+          if (inputRef.current && !inputRef.current.contains(e.target)){
+            setIsDropbox(false);
+          }
+        };
+        document.addEventListener('mousedown', handleClickOutside);
+    }, [inputRef]);
+
+    const onChangeEmail = (e) => {
+        setEmail(e.target.value);
+    
+        if (e.target.value.includes('@')) {
+          setIsDropbox(true);
+          setEmailList(
+            FrequencyEmails.filter((el) =>
+              el.includes(e.target.value.split('@')[1]),
+            ),
+          );
+        } else {
+          setIsDropbox(false);
+          setSelected(-1);
+        }
+    };
+
+    const handleDropDownClick = (first, second) => {
+        setEmail(`${first.split('@')[0]}${second}`);
+        setIsDropbox(false);
+        setSelected(-1);
+    };
+
+    const handleKeyUp = (e) => {
+        if (isDrobBox) {
+          if (e.key === 'ArrowDown' && emailList.length - 1 > selected) {
+            setSelected(selected + 1);
+          }
+          //emailList.length에 -1을 해주는 이유는 selected의 최대값을 맞춰주기 위해서이다.
+          //예를들어 밑에 emailList 2개가 나왔다고 가정했을 때, selected값이 최대 1까지 변할 수 있게 해줘야한다. 
+          //'ArrowDown'키를 누르면 selected는 0이 되고, 한번 더 누르면 1이 되고, 그 다음은 더이상 옵션이 없기 때문에 키가 안먹히게 해주는 것이다.
+    
+          if (e.key === 'ArrowUp' && selected >= 0) {
+            setSelected(selected - 1);
+          }
+          if (e.key === 'Enter' && selected >= 0) {
+            handleDropDownClick(email, emailList[selected]);
+          }
+        }
+    };
+
     return(
         <>
-        <div style={{marginTop : '250px'}}>'<span style={{color : 'red', fontSize : '20px'}}>{searchKeyword[0]}</span>'에 대한 검색결과가 없습니다.</div>
+        {/* <div style={{marginTop : '250px'}}>'<span style={{color : 'red', fontSize : '20px'}}>{searchKeyword[0]}</span>'에 대한 검색결과가 없습니다.</div>
         <div><CgSearchLoading size="100px" /></div>
+        <div ref={inputRef} style={{marginTop : '50px'}}>
+                <input
+                    type="email"
+                    placeholder="이메일(아이디) 입력"
+                    value={email}
+                    onChange={(e) => {
+                    onChangeEmail(e);
+                    }}
+                    onKeyUp={handleKeyUp}
+                />
+                {isDrobBox && (
+                <div>
+                    {emailList.map((item, idx) => (
+                    <div
+                        key={idx}
+                        onMouseOver={() => setSelected(idx)}
+                        onClick={() => handleDropDownClick(email, item)}
+                        selected={selected === idx}
+                    >
+                        {email.split('@')[0]}
+                        {item}
+                    </div>
+                    ))}
+                </div>
+                )}
+            </div> */}
         </>
     )
 }
